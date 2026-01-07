@@ -1,112 +1,304 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="utf-8">
-  <title>台水互動水情圖｜蘭潭－仁義潭</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>水庫互動圖入口｜蘭潭×仁義潭・阿里山原水・湖山</title>
   <style>
-    :root {
-      --bg: #0b1220;
-      --card: rgba(255,255,255,0.06);
-      --card2: rgba(255,255,255,0.08);
-      --text: rgba(255,255,255,0.92);
-      --muted: rgba(255,255,255,0.70);
-      --border: rgba(255,255,255,0.12);
+    :root{
+      --bg: #ffffff;
+      --panel: #ffffff;
+      --text: #0f172a;
+      --sub: #475569;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --shadow: 0 10px 24px rgba(15,23,42,.06);
+      --blue: #2563eb;
+      --blue2:#1d4ed8;
+      --chip-bg:#eff6ff;
+      --chip-br:#dbeafe;
     }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", Arial, sans-serif;
-      background: radial-gradient(1200px 800px at 10% 10%, rgba(96,165,250,0.20), transparent 60%),
-                  radial-gradient(900px 700px at 90% 20%, rgba(168,85,247,0.18), transparent 55%),
-                  radial-gradient(900px 700px at 40% 90%, rgba(16,185,129,0.12), transparent 60%),
-                  var(--bg);
+    *{ box-sizing: border-box; }
+    body{
+      margin:0;
+      background: var(--bg);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", "PingFang TC", "Heiti TC", sans-serif;
       color: var(--text);
     }
-    .wrap { max-width: 980px; margin: 0 auto; padding: 22px 14px 28px; }
-    h1 { margin: 0 0 8px; font-size: 22px; font-weight: 800; letter-spacing: .2px; }
-    .sub { margin: 0 0 18px; color: var(--muted); font-size: 13px; line-height: 1.6; }
-    .grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
-    @media (min-width: 880px) { .grid { grid-template-columns: 1fr 1fr; } }
-    .card {
-      background: linear-gradient(180deg, var(--card2), var(--card));
+    .wrap{
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 22px 16px 34px;
+    }
+    .hero{
       border: 1px solid var(--border);
       border-radius: 18px;
-      padding: 14px 16px;
-      box-shadow: 0 18px 45px rgba(0,0,0,0.35);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      padding: 18px 18px 14px;
+      margin-bottom: 14px;
     }
-    .title { font-size: 15px; font-weight: 750; margin: 0 0 6px; }
-    .desc { margin: 0 0 10px; font-size: 13px; color: var(--muted); line-height: 1.55; }
-    .btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 10px 12px;
+    .title-row{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    h1{
+      margin:0;
+      font-size: 20px;
+      letter-spacing:.02em;
+      line-height: 1.25;
+    }
+    .subtitle{
+      margin: 6px 0 0 0;
+      color: var(--sub);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top: 10px;
+    }
+    .chip{
+      font-size: 12px;
+      color: #0b3b8a;
+      background: var(--chip-bg);
+      border: 1px solid var(--chip-br);
+      border-radius: 999px;
+      padding: 4px 10px;
+      white-space: nowrap;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+    @media (max-width: 860px){
+      .grid{ grid-template-columns: 1fr; }
+    }
+
+    .card{
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      padding: 16px 16px 14px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      min-height: 152px;
+    }
+    .card-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 12px;
+    }
+    .card-title{
+      font-size: 16px;
+      font-weight: 650;
+      letter-spacing:.01em;
+      margin:0;
+      line-height:1.25;
+    }
+    .badge{
+      font-size: 12px;
+      color: #0b3b8a;
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 4px 10px;
+      white-space: nowrap;
+    }
+    .card-desc{
+      margin:0;
+      color: var(--sub);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .links{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:auto;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 9px 12px;
       border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.14);
-      background: rgba(96,165,250,0.16);
-      color: rgba(255,255,255,0.92);
-      text-decoration: none;
+      border: 1px solid #c7d2fe;
+      background: #eef2ff;
+      color: var(--blue2);
+      text-decoration:none;
       font-weight: 650;
       font-size: 13px;
+      transition: transform .06s ease, background .12s ease;
     }
-    .btn:hover { background: rgba(96,165,250,0.24); }
-    .meta {
-      margin-top: 14px; font-size: 12px; color: rgba(255,255,255,0.62); line-height: 1.7;
-      border-top: 1px dashed rgba(255,255,255,0.14);
+    .btn:hover{ background:#e0e7ff; }
+    .btn:active{ transform: translateY(1px); }
+    .small-link{
+      color: var(--blue);
+      text-decoration: none;
+      font-size: 13px;
+    }
+    .small-link:hover{ text-decoration: underline; }
+
+    .footer{
+      margin-top: 14px;
+      border-top: 1px dashed var(--border);
       padding-top: 12px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
     }
-    code {
-      background: rgba(255,255,255,0.08);
-      padding: 2px 6px;
+    code{
+      background:#f1f5f9;
+      border:1px solid #e2e8f0;
+      padding: 1px 6px;
       border-radius: 8px;
-      border: 1px solid rgba(255,255,255,0.10);
+    }
+    .icon{
+      width: 16px;
+      height: 16px;
+      display:inline-block;
     }
   </style>
 </head>
+
 <body>
   <div class="wrap">
-    <h1>蘭潭－仁義潭水庫互動圖（GitHub Pages）</h1>
-    <p class="sub">
-      本頁整理 109–115 年「蘭潭＋仁義潭合計有效蓄水量」互動圖。<br>
-      115 年目前資料僅到 <b>1/6</b>（後續空值不繪線、不會掉到 0）。
-    </p>
+    <div class="hero">
+      <div class="title-row">
+        <div>
+          <h1>水庫互動圖入口（四張圖）</h1>
+          <p class="subtitle">
+            蘭潭×仁義潭（每日／月平均）、阿里山原水、湖山水庫。點「開啟互動圖」即可在新分頁查看。
+          </p>
+        </div>
+        <div class="chips">
+          <span class="chip">GitHub Pages</span>
+          <span class="chip">統一風格入口</span>
+          <span class="chip">可直接貼到簡報超連結</span>
+        </div>
+      </div>
+    </div>
 
     <div class="grid">
-      <div class="card">
-        <div class="title">每日運轉歷線圖（109–115 年）</div>
-        <p class="desc">含各年度每日合計有效蓄水量、近5年平均(109–113)與運轉曲線；可縮放、可存圖、可看資料表。</p>
-        <a class="btn" href="charts/lantan_renyitan_daily_ops_109_115_zoom.html" target="_blank">開啟互動圖 →</a>
-      </div>
 
-      <div class="card">
-        <div class="title">歷年月平均 vs 運轉曲線（月平均）（109–115 年）</div>
-        <p class="desc">把每日資料彙整為月平均，快速比較季節性變化；含近5年平均(月平均)與運轉曲線(月平均)。</p>
-        <a class="btn" href="charts/lantan_renyitan_month_avg_ops_109_115.html" target="_blank">開啟互動圖 →</a>
-      </div>
+      <!-- 1) 蘭潭×仁義潭：每日歷線（109–115） -->
+      <section class="card">
+        <div class="card-head">
+          <h2 class="card-title">蘭潭×仁義潭｜每日運轉歷線（109–115）</h2>
+          <span class="badge">含縮放</span>
+        </div>
+        <p class="card-desc">
+          合計有效蓄水量（百萬立方公尺），可拖曳縮放、滑桿縮放與一鍵還原。
+        </p>
+        <div class="links">
+          <a class="btn" href="charts/lantan_renyitan_daily_ops_109_115_zoom.html" target="_blank" rel="noopener">
+            <svg class="icon" viewBox="0 0 24 24" fill="none">
+              <path d="M14 3h7v7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M21 3l-9 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M10 5H6a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            開啟互動圖
+          </a>
+          <a class="small-link" href="charts/lantan_renyitan_daily_ops_109_115_zoom.html" target="_blank" rel="noopener">
+            直接連結
+          </a>
+        </div>
+      </section>
+
+      <!-- 2) 蘭潭×仁義潭：月平均 vs 運轉曲線（109–115） -->
+      <section class="card">
+        <div class="card-head">
+          <h2 class="card-title">蘭潭×仁義潭｜月平均 vs 運轉曲線（109–115）</h2>
+          <span class="badge">月尺度</span>
+        </div>
+        <p class="card-desc">
+          每月平均趨勢對照用（含平均線/曲線），適合快速看季節性變化。
+        </p>
+        <div class="links">
+          <a class="btn" href="charts/lantan_renyitan_month_avg_ops_109_115.html" target="_blank" rel="noopener">
+            <svg class="icon" viewBox="0 0 24 24" fill="none">
+              <path d="M14 3h7v7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M21 3l-9 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M10 5H6a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            開啟互動圖
+          </a>
+          <a class="small-link" href="charts/lantan_renyitan_month_avg_ops_109_115.html" target="_blank" rel="noopener">
+            直接連結
+          </a>
+        </div>
+      </section>
+
+      <!-- 3) 阿里山原水：106–115 -->
+      <section class="card">
+        <div class="card-head">
+          <h2 class="card-title">阿里山原水｜蓄水量歷線（106–115）</h2>
+          <span class="badge">白底</span>
+        </div>
+        <p class="card-desc">
+          白底互動式折線圖（含可支援水位虛線）；支援縮放、還原與存圖。
+        </p>
+        <div class="links">
+          <a class="btn" href="charts/alishan_rawwater_storage_106_115_white.html" target="_blank" rel="noopener">
+            <svg class="icon" viewBox="0 0 24 24" fill="none">
+              <path d="M14 3h7v7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M21 3l-9 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M10 5H6a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            開啟互動圖
+          </a>
+          <a class="small-link" href="charts/alishan_rawwater_storage_106_115_white.html" target="_blank" rel="noopener">
+            直接連結
+          </a>
+        </div>
+      </section>
+
+      <!-- 4) 湖山水庫：110–115 -->
+      <section class="card">
+        <div class="card-head">
+          <h2 class="card-title">湖山水庫｜歷線（110–115）</h2>
+          <span class="badge">白底</span>
+        </div>
+        <p class="card-desc">
+          110–115 年日別蓄水量歷線（含近4年平均參考線）；支援縮放、還原與存圖。
+        </p>
+        <div class="links">
+          <a class="btn" href="charts/hushan_reservoir_storage_110_115_white.html" target="_blank" rel="noopener">
+            <svg class="icon" viewBox="0 0 24 24" fill="none">
+              <path d="M14 3h7v7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M21 3l-9 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M10 5H6a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            開啟互動圖
+          </a>
+          <a class="small-link" href="charts/hushan_reservoir_storage_110_115_white.html" target="_blank" rel="noopener">
+            直接連結
+          </a>
+        </div>
+      </section>
+
     </div>
 
-    <div class="meta">
-      你可以把更多互動圖放進 <code>charts/</code>，然後在本頁新增一張卡片連結即可。<br>
-      Pages 網址規則：<code>https://spchuck.github.io/twc-water-charts/</code> + 檔案路徑（例如 <code>charts/xxx.html</code>）。
+    <div class="footer">
+      <div><b>更新方式（最省事）：</b></div>
+      <div>1) 把新的互動圖 HTML 上傳到 <code>charts/</code>（同名會覆蓋、舊連結不用改）</div>
+      <div>2) 若新增「新圖」，就在本頁複製一張卡片並修改 <code>href</code> 檔名後 Commit</div>
+      <div style="margin-top:6px;">iPhone 若看到舊畫面：請關掉分頁再重開（Safari 常快取）。</div>
     </div>
-    <div class="card">
-  <div class="card-title">阿里山原水蓄水量歷線圖（106–115 年）</div>
-  <div class="card-desc">白底互動式折線圖，含各年度歷線與可縮放檢視。</div>
-  <div class="card-link">
-    <a href="charts/alishan_rawwater_storage_106_115_white.html" target="_blank">
-      開啟互動圖
-    </a>
-  </div>
-</div>
-
   </div>
 </body>
 </html>
-<div class="card">
-  <div class="card-title">湖山水庫歷線圖（110–115 年）</div>
-  <div class="card-desc">白底互動式折線圖，含各年度蓄水量歷線與近4年平均，可縮放檢視。</div>
-  <div class="card-link">
-    <a href="charts/hushan_reservoir_storage_110_115_white.html" target="_blank">
-      開啟互動圖
-    </a>
-  </div>
-</div>

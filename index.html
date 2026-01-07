@@ -2,59 +2,92 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="utf-8">
-  <title>蘭潭－仁義潭水庫互動圖專區</title>
+  <title>台水互動水情圖｜蘭潭－仁義潭</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
+    :root {
+      --bg: #0b1220;
+      --card: rgba(255,255,255,0.06);
+      --card2: rgba(255,255,255,0.08);
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.70);
+      --border: rgba(255,255,255,0.12);
+    }
+    * { box-sizing: border-box; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
       margin: 0;
-      padding: 2rem;
-      background: #f3f4f6;
-      color: #111827;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", Arial, sans-serif;
+      background: radial-gradient(1200px 800px at 10% 10%, rgba(96,165,250,0.20), transparent 60%),
+                  radial-gradient(900px 700px at 90% 20%, rgba(168,85,247,0.18), transparent 55%),
+                  radial-gradient(900px 700px at 40% 90%, rgba(16,185,129,0.12), transparent 60%),
+                  var(--bg);
+      color: var(--text);
     }
-    h1 {
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
+    .wrap { max-width: 980px; margin: 0 auto; padding: 22px 14px 28px; }
+    h1 { margin: 0 0 8px; font-size: 22px; font-weight: 800; letter-spacing: .2px; }
+    .sub { margin: 0 0 18px; color: var(--muted); font-size: 13px; line-height: 1.6; }
+    .grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    @media (min-width: 880px) { .grid { grid-template-columns: 1fr 1fr; } }
+    .card {
+      background: linear-gradient(180deg, var(--card2), var(--card));
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 14px 16px;
+      box-shadow: 0 18px 45px rgba(0,0,0,0.35);
     }
-    p {
-      margin-bottom: 1.5rem;
-      color: #4b5563;
-    }
-    ul {
-      list-style-type: none;
-      padding-left: 0;
-    }
-    li {
-      margin-bottom: 0.75rem;
-      background: #ffffff;
+    .title { font-size: 15px; font-weight: 750; margin: 0 0 6px; }
+    .desc { margin: 0 0 10px; font-size: 13px; color: var(--muted); line-height: 1.55; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 12px;
       border-radius: 12px;
-      padding: 1rem 1.25rem;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-    }
-    li a {
-      display: block;
-      font-size: 1rem;
-      color: #2563eb;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(96,165,250,0.16);
+      color: rgba(255,255,255,0.92);
       text-decoration: none;
+      font-weight: 650;
+      font-size: 13px;
     }
-    li a:hover {
-      text-decoration: underline;
+    .btn:hover { background: rgba(96,165,250,0.24); }
+    .meta {
+      margin-top: 14px; font-size: 12px; color: rgba(255,255,255,0.62); line-height: 1.7;
+      border-top: 1px dashed rgba(255,255,255,0.14);
+      padding-top: 12px;
+    }
+    code {
+      background: rgba(255,255,255,0.08);
+      padding: 2px 6px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.10);
     }
   </style>
 </head>
 <body>
-  <h1>蘭潭－仁義潭水庫互動圖專區</h1>
-  <p>本頁提供蘭潭與仁義潭水庫歷線圖互動視覺化連結，請點擊以下連結查看：</p>
-  <ul>
-    <li>
-      <a href="charts/lantan_renyitan_daily_ops_109_114_zoom.html">每日運轉歷線圖（109–114&nbsp;年）</a>
-      <p style="margin-top:0.5rem; color:#6b7280; font-size:0.875rem;">包含各年度每日合計有效蓄水量、近 5 年平均與運轉曲線，可拖曳及縮放檢視。</p>
-    </li>
-    <li>
-      <a href="charts/lantan_renyitan_month_avg_ops_109_114.html">歷年月平均合計有效蓄水量圖（109–114&nbsp;年）</a>
-      <p style="margin-top:0.5rem; color:#6b7280; font-size:0.875rem;">按月份彙整各年度的月平均合計有效蓄水量，另附 5 年平均與運轉曲線的月平均。</p>
-    </li>
-  </ul>
-  <p>註：若月平均圖的檔名為 <code>lantan_renyitan_month_avg_ops_109_114.html.html</code>，請先在 GitHub 將它重新命名為 <code>lantan_renyitan_month_avg_ops_109_114.html</code>，以便上述連結正確運作。</p>
+  <div class="wrap">
+    <h1>蘭潭－仁義潭水庫互動圖（GitHub Pages）</h1>
+    <p class="sub">
+      本頁整理 109–115 年「蘭潭＋仁義潭合計有效蓄水量」互動圖。<br>
+      115 年目前資料僅到 <b>1/6</b>（後續空值不繪線、不會掉到 0）。
+    </p>
+
+    <div class="grid">
+      <div class="card">
+        <div class="title">每日運轉歷線圖（109–115 年）</div>
+        <p class="desc">含各年度每日合計有效蓄水量、近5年平均(109–113)與運轉曲線；可縮放、可存圖、可看資料表。</p>
+        <a class="btn" href="charts/lantan_renyitan_daily_ops_109_115_zoom.html" target="_blank">開啟互動圖 →</a>
+      </div>
+
+      <div class="card">
+        <div class="title">歷年月平均 vs 運轉曲線（月平均）（109–115 年）</div>
+        <p class="desc">把每日資料彙整為月平均，快速比較季節性變化；含近5年平均(月平均)與運轉曲線(月平均)。</p>
+        <a class="btn" href="charts/lantan_renyitan_month_avg_ops_109_115.html" target="_blank">開啟互動圖 →</a>
+      </div>
+    </div>
+
+    <div class="meta">
+      你可以把更多互動圖放進 <code>charts/</code>，然後在本頁新增一張卡片連結即可。<br>
+      Pages 網址規則：<code>https://spchuck.github.io/twc-water-charts/</code> + 檔案路徑（例如 <code>charts/xxx.html</code>）。
+    </div>
+  </div>
 </body>
 </html>

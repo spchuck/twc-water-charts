@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>蘭潭－仁義潭歷年月平均 vs 運轉曲線（109–115年）</title>
+  <script src="https://fastly.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+  <style>
+    :root {
+      --bg: #0b1220;
+      --card: rgba(255,255,255,0.06);
+      --card2: rgba(255,255,255,0.08);
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.70);
+      --grid: rgba(255,255,255,0.14);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", Arial, sans-serif;
+      background: radial-gradient(1200px 800px at 10% 10%, rgba(96,165,250,0.20), transparent 60%),
+                  radial-gradient(900px 700px at 90% 20%, rgba(168,85,247,0.18), transparent 55%),
+                  radial-gradient(900px 700px at 40% 90%, rgba(16,185,129,0.12), transparent 60%),
+                  var(--bg);
+      color: var(--text);
+    }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 18px 14px 22px; }
+    .header {
+      display: flex; flex-wrap: wrap; gap: 10px 18px;
+      align-items: baseline; justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .title { font-size: 20px; font-weight: 750; margin: 0; }
+    .subtitle { font-size: 13px; color: var(--muted); margin: 0; }
+    .pill {
+      display: inline-flex; gap: 8px; align-items: center;
+      padding: 6px 10px; border-radius: 999px;
+      background: var(--card); border: 1px solid rgba(255,255,255,0.10);
+      color: var(--muted); font-size: 12px;
+    }
+    .card {
+      background: linear-gradient(180deg, var(--card2), var(--card));
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 18px;
+      box-shadow: 0 18px 45px rgba(0,0,0,0.35);
+      overflow: hidden;
+    }
+    #chart { width: 100%; height: min(74vh, 720px); }
+    .footer {
+      margin-top: 10px; color: rgba(255,255,255,0.65);
+      font-size: 12px; line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="header">
+      <div>
+        <h1 class="title">歷年月平均＋運轉曲線（月平均）（109–115年）</h1>
+        <p class="subtitle">X軸：月份；Y軸：合計有效蓄水量（百萬立方公尺）。含近5年平均(月平均)與運轉曲線(月平均)。</p>
+      </div>
+      <div class="pill">115年僅有 1 月初資料（目前至 1/6），其餘月份不繪線、不落零</div>
+    </div>
+
+    <div class="card">
+      <div id="chart"></div>
+    </div>
+
+    <div class="footer">
+      提示：點圖例可單獨顯示某年度；滑鼠移到點上可看月平均數值。
+    </div>
+  </div>
+
+<script>
+  const option = {
+    backgroundColor: 'transparent',
+    textStyle: {
+      fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","PingFang TC","Microsoft JhengHei",Arial,sans-serif',
+      fontSize: 12,
+      color: 'rgba(255,255,255,0.88)'
+    },
+    title: { show: false },
+    legend: {
+      top: 10,
+      left: 12,
+      itemWidth: 14,
+      itemHeight: 8,
+      itemGap: 12,
+      textStyle: { color: 'rgba(255,255,255,0.82)', fontSize: 12 },
+      inactiveColor: 'rgba(255,255,255,0.28)',
+      type: 'scroll',
+      pageIconColor: 'rgba(255,255,255,0.55)',
+      pageTextStyle: { color: 'rgba(255,255,255,0.55)' }
+    },
+    grid: { top: 58, left: 56, right: 24, bottom: 40, containLabel: true },
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: { type: 'line' },
+      backgroundColor: 'rgba(17,24,39,0.92)',
+      borderColor: 'rgba(255,255,255,0.12)',
+      borderWidth: 1,
+      textStyle: { color: 'rgba(255,255,255,0.92)', fontSize: 12 },
+      valueFormatter: (v) => (v == null ? '-' : (Number(v).toFixed(3) + ' MCM'))
+    },
+    toolbox: {
+      right: 10,
+      top: 8,
+      iconStyle: { borderColor: 'rgba(255,255,255,0.70)' },
+      feature: {
+        restore: {},
+        saveAsImage: { pixelRatio: 2 },
+        dataView: { readOnly: true }
+      }
+    },
+    xAxis: {
+      type: 'category',
+      boundaryGap: false,
+      data: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
+      axisLine: { lineStyle: { color: 'rgba(255,255,255,0.40)' } },
+      axisTick: { show: false },
+      axisLabel: { color: 'rgba(255,255,255,0.82)', fontSize: 12, margin: 12 },
+      splitLine: { show: true, lineStyle: { color: 'rgba(255,255,255,0.10)' } }
+    },
+    yAxis: {
+      type: 'value',
+      name: '百萬立方公尺 (MCM)',
+      nameTextStyle: { color: 'rgba(255,255,255,0.78)', fontSize: 12 },
+      axisLine: { show: false },
+      axisTick: { show: false },
+      axisLabel: { color: 'rgba(255,255,255,0.82)', fontSize: 12 },
+      splitLine: { show: true, lineStyle: { color: 'rgba(255,255,255,0.14)' } },
+      minorTick: { show: true },
+      minorSplitLine: { show: true, lineStyle: { color: 'rgba(255,255,255,0.06)' } }
+    },
+    series: [{"name": "109年(月平均)", "type": "line", "smooth": true, "showSymbol": false, "symbolSize": 6, "connectNulls": false, "lineStyle": {"width": 2}, "emphasis": {"focus": "series"}, "data": [21.181, 17.938, 13.65, 10.851, 9.586, 22.606, 25.513, 32.776, 34.278, 30.946, 27.065, 23.459]}, {"name": "110年(月平均)", "type": "line", "smooth": true, "showSymbol": false, "symbolSize": 6, "connectNulls": false, "lineStyle": {"width": 2}, "emphasis": {"focus": "series"}, "data": [19.818, 16.822, 14.624, 11.907, 9.012, 23.07, 33.425, 32.86, 32.86, 32.851, 29.761, 25.44]}, {"name": "111年(月平均)", "type": "line", "smooth": true, "showSymbol": false, "symbolSize": 6, "connectNulls": false, "lineStyle": {"width": 2}, "emphasis": {"focus": "series"}, "data": [20.026, 17.007, 15.691, 13.776, 16.156, 31.402, 31.845, 32.872, 33.684, 30.542, 25.981, 21.625]}, {"name": "112年(月平均)", "type": "line", "smooth": true, "showSymbol": false, "symbolSize": 6, "connectNulls": false, "lineStyle": {"width": 2}, "emphasis": {"focus": "series"}, "data": [16.691, 12.63, 10.269, 8.184, 7.313, 14.297, 25.971, 33.32, 33.109, 33.381, 31.455, 26.909]}, {"name": "113年(月平均)", "type": "line", "smooth": true, "showSymbol": false, "symbolSize": 6, "connectNulls": false, "lineStyle": {"width": 2}, "emphasis": {"focus": "series"}, "data": [21.179, 17.428, 13.703, 10.43, 10.546, 24.767, 31.479, 32.771, 33.248, 32.523, 33.394, 29.765]}, {"name": "114年(月平均)", "type": "line", "smooth": true, "showSymbol": false, "symbolSize": 6, "connectNulls": false, "lineStyle": {"width": 2}, "emphasis": {"focus": "series"}, "data": [25.006, 21.627, 18.891, 15.571, 12.729, 20.865, 31.79, 32.651, 33.505, 31.694, 26.678, 20.864]}, {"name": "115年(月平均)", "type": "line", "smooth": true, "showSymbol": true, "symbolSize": 7, "connectNulls": false, "lineStyle": {"width": 2}, "emphasis": {"focus": "series"}, "data": [18.462, null, null, null, null, null, null, null, null, null, null, null]}, {"name": "近5年平均(月平均,109-113)", "type": "line", "smooth": true, "showSymbol": false, "connectNulls": true, "lineStyle": {"width": 3, "type": "dashed"}, "emphasis": {"focus": "series"}, "data": [19.779, 16.365, 13.587, 11.029, 10.523, 23.229, 29.647, 32.92, 33.436, 32.049, 29.531, 25.439]}, {"name": "運轉曲線(月平均)", "type": "line", "smooth": true, "showSymbol": false, "connectNulls": true, "lineStyle": {"width": 3, "type": "dashed"}, "emphasis": {"focus": "series"}, "data": [18.6, 14.514, 11.885, 7.9, 5.0, 12.75, 23.36, 30.658, 33.723, 32.035, 28.366, 23.439]}]
+  };
+
+  const chartEl = document.getElementById('chart');
+  const chart = echarts.init(chartEl, null, { renderer: 'canvas' });
+  chart.setOption(option);
+  window.addEventListener('resize', () => chart.resize());
+</script>
+</body>
+</html>

@@ -1,10 +1,11 @@
 const message = document.querySelector("#message");
-const exportPanel = document.querySelector("#exportPanel");
-const exportMeta = document.querySelector("#exportMeta");
-const downloadList = document.querySelector("#downloadList");
-const previewPanel = document.querySelector("#previewPanel");
-const previewMeta = document.querySelector("#previewMeta");
-const exportPreview = document.querySelector("#exportPreview");
+const fileInput = document.querySelector("#fileInput");
+const uploadMeta = document.querySelector("#uploadMeta");
+const datePanel = document.querySelector("#datePanel");
+const dateMeta = document.querySelector("#dateMeta");
+const yearSelect = document.querySelector("#yearSelect");
+const monthSelect = document.querySelector("#monthSelect");
+const daySelect = document.querySelector("#daySelect");
 
 const metricTargets = {
   "原水總取水量": document.querySelector("#metricRaw"),
@@ -14,21 +15,147 @@ const metricTargets = {
   "各場所統計供水量": document.querySelector("#metricSiteTotal"),
 };
 
-loadPublicData();
+let availableDates = [];
+let publicRecords = {};
+let activeDateKey = "";
+let dateListenersBound = false;
 
-async function loadPublicData() {
-  setMessage("資料載入中", "info");
-  try {
-    const response = await fetch("./data.json", { cache: "no-store" });
-    const payload = await response.json();
-    if (!response.ok || !payload.ok) {
-      throw new Error(payload.error || "公開資料載入失敗。");
-    }
-    renderDashboard(payload);
-    setMessage(`已載入 ${payload.date.label}`, "info");
-  } catch (error) {
-    setMessage(error.message, "error");
+initialisePage();
+
+function initialisePage() {
+  clearDashboard();
+  setMessage("請選擇年度供水日報表 Excel 檔案。", "info");
+  if (fileInput) {
+    fileInput.addEventListener("change", handleFileUpload);
   }
+}
+
+async function handleFileUpload(event) {
+  const file = event.target.files?.[0];
+  if (!file) {
+    setMessage("請先選擇水量 Excel 檔案。", "info");
+    return;
+  }
+
+  setMessage("Excel 檔案解析中，請稍候。", "info");
+  clearDashboard();
+  try {
+    if (!window.XLSX) {
+      throw new Error("Excel 解析套件尚未載入，請確認網路連線或重新整理頁面。");
+    }
+    if (!window.WaterStatusCalc) {
+      throw new Error("水量計算模組尚未載入，請重新整理頁面後再試。");
+    }
+
+    const buffer = await file.arrayBuffer();
+    const workbook = window.XLSX.read(buffer, { type: "array", cellFormula: true });
+    const dataset = window.WaterStatusCalc.buildDataset(workbook, file.name);
+    setupDateControls(dataset);
+    renderSelectedDate(dataset.selectedKey);
+
+    const firstDate = dataset.dates[0];
+    const lastDate = dataset.dates.at(-1);
+    uploadMeta.textContent = `已讀取 ${file.name}；可查詢日期 ${firstDate.label} 至 ${lastDate.label}，共 ${dataset.dates.length} 日。`;
+  } catch (error) {
+    publicRecords = {};
+    availableDates = [];
+    datePanel.hidden = true;
+    uploadMeta.textContent = "檔案解析未完成，請確認是否為既有年度供水日報表格式。";
+    setMessage(error.message || "Excel 檔案解析失敗。", "error");
+  }
+}
+
+function setupDateControls(dataset) {
+  publicRecords = dataset.records;
+  availableDates = dataset.dates;
+  const selected = publicRecords[dataset.selectedKey] || publicRecords[availableDates.at(-1)?.key];
+  if (!selected) {
+    throw new Error("未找到可供查詢之完整日期資料。");
+  }
+
+  bindDateListeners();
+  setSelectOptions(yearSelect, uniqueSorted(availableDates.map((item) => item.year)), selected.date.year, (value) => `${value} 年`);
+  refreshMonthOptions(selected.date.month);
+  refreshDayOptions(selected.date.day);
+  datePanel.hidden = false;
+}
+
+function bindDateListeners() {
+  if (dateListenersBound) {
+    return;
+  }
+  yearSelect.addEventListener("change", () => {
+    refreshMonthOptions(Number(monthSelect.value));
+    refreshDayOptions(Number(daySelect.value));
+    renderDateFromControls();
+  });
+  monthSelect.addEventListener("change", () => {
+    refreshDayOptions(Number(daySelect.value));
+    renderDateFromControls();
+  });
+  daySelect.addEventListener("change", renderDateFromControls);
+  dateListenersBound = true;
+}
+
+function refreshMonthOptions(preferredMonth) {
+  const year = Number(yearSelect.value);
+  const months = uniqueSorted(availableDates.filter((item) => item.year === year).map((item) => item.month));
+  const selectedMonth = months.includes(preferredMonth) ? preferredMonth : months.at(-1);
+  setSelectOptions(monthSelect, months, selectedMonth, (value) => `${pad2(value)} 月`);
+}
+
+function refreshDayOptions(preferredDay) {
+  const year = Number(yearSelect.value);
+  const month = Number(monthSelect.value);
+  const days = uniqueSorted(availableDates.filter((item) => item.year === year && item.month === month).map((item) => item.day));
+  const selectedDay = days.includes(preferredDay) ? preferredDay : days.at(-1);
+  setSelectOptions(daySelect, days, selectedDay, (value) => `${pad2(value)} 日`);
+}
+
+function setSelectOptions(select, values, selectedValue, labelForValue) {
+  select.replaceChildren();
+  for (const value of values) {
+    const option = document.createElement("option");
+    option.value = String(value);
+    option.textContent = labelForValue(value);
+    select.appendChild(option);
+  }
+  select.value = String(selectedValue);
+}
+
+function renderDateFromControls() {
+  renderSelectedDate(`${yearSelect.value}-${pad2(monthSelect.value)}-${pad2(daySelect.value)}`);
+}
+
+function renderSelectedDate(key) {
+  const payload = publicRecords[key];
+  if (!payload) {
+    setMessage("查無該日期之完整水量資料。", "error");
+    return;
+  }
+  activeDateKey = key;
+  renderDashboard(payload);
+  dateMeta.textContent = `目前顯示 ${payload.date.label}；本檔案共可查詢 ${availableDates.length} 日。`;
+  setMessage(`已產出 ${payload.date.label} 水情資料。`, "info");
+}
+
+function clearDashboard() {
+  activeDateKey = "";
+  document.querySelector("#sourceLine").textContent = "請先選擇水量 Excel 檔案";
+  for (const target of Object.values(metricTargets)) {
+    target.textContent = "--";
+  }
+  for (const selector of ["#reservoirCards", "#outflowChart", "#rawWaterChart", "#crossSupportChart", "#yunlinSupportChart", "#minxiongSupportChart", "#controlTable", "#digestChart", "#auditList"]) {
+    document.querySelector(selector).replaceChildren();
+  }
+}
+
+function uniqueSorted(values) {
+  return [...new Set(values)].sort((left, right) => left - right);
+}
+
+function pad2(value) {
+  return String(value).padStart(2, "0");
 }
 
 function setMessage(text, type) {
@@ -56,37 +183,6 @@ function renderDashboard(payload) {
   renderControlTable(payload.sections.control);
   renderBars("#digestChart", payload.sections.digestChart);
   renderAudit(payload.audit);
-  renderDownloads(payload.downloads || []);
-}
-
-function renderDownloads(downloads) {
-  downloadList.replaceChildren();
-  if (!downloads.length) {
-    exportPanel.hidden = true;
-    previewPanel.hidden = true;
-    return;
-  }
-
-  let preview = null;
-  for (const file of downloads) {
-    const link = document.createElement("a");
-    link.className = `download-card ${file.kind === "workbook" ? "secondary" : ""}`;
-    link.href = file.href;
-    link.download = file.filename || "";
-    link.textContent = file.label;
-    downloadList.appendChild(link);
-    if (!preview && file.kind === "infographic") {
-      preview = file;
-    }
-  }
-
-  exportMeta.textContent = "本頁下載檔均為外站同目錄靜態檔案，未連線至公司內部主機。";
-  exportPanel.hidden = false;
-  if (preview) {
-    exportPreview.src = preview.href;
-    previewMeta.textContent = preview.label;
-    previewPanel.hidden = false;
-  }
 }
 
 function renderReservoir(rows) {
@@ -99,11 +195,14 @@ function renderReservoir(rows) {
     card.innerHTML = `
       <h3>${escapeHtml(row.name)}</h3>
       <dl>
-        <div><dt>水位</dt><dd>${formatNumber(row.level, 2)} M</dd></div>
-        <div><dt>有效蓄水量</dt><dd>${formatNumber(row.storage, 2)} 萬m³</dd></div>
-        <div><dt>蓄水率</dt><dd>${formatNumber(rate, 2)}%</dd></div>
+        <dt>水位</dt>
+        <dd>${row.level == null ? "--" : `${formatNumber(row.level, 2)} M`}</dd>
+        <dt>有效蓄水量</dt>
+        <dd>${formatNumber(row.storage, 2)} 萬m3</dd>
+        <dt>蓄水率</dt>
+        <dd>${formatNumber(rate, 2)}%</dd>
+        <div class="rate-track"><i style="width:${clamp(rate, 0, 100)}%"></i></div>
       </dl>
-      <div class="rate-track"><i style="width:${clamp(rate, 0, 100)}%"></i></div>
     `;
     container.appendChild(card);
   }
@@ -119,9 +218,9 @@ function renderBars(selector, rows) {
     const item = document.createElement("div");
     item.className = "bar-row";
     item.innerHTML = `
-      <span>${escapeHtml(row.name)}</span>
+      <div class="bar-label">${escapeHtml(row.name)}</div>
       <div class="bar-track"><i class="bar-fill" style="width:${width}%"></i></div>
-      <strong>${formatNumber(value, 0)}</strong>
+      <div class="bar-value">${formatNumber(value, 0)}</div>
     `;
     container.appendChild(item);
   }

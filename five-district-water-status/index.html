@@ -12,30 +12,46 @@
       <section class="toolbar public-toolbar" aria-label="公開資料摘要">
         <div class="brand">
           <h1>五區水情公開資訊圖表</h1>
-          <p id="sourceLine">資料載入中</p>
+          <p id="sourceLine">請先選擇水量 Excel 檔案</p>
         </div>
         <div class="public-note">
-          <strong>靜態外站版本</strong>
-          <span>本頁僅讀取同站公開資料檔，不連線至公司內部主機或內網 API。</span>
+          <strong>瀏覽器端查詢版本</strong>
+          <span>本頁僅在瀏覽器讀取您選擇的 Excel 檔，不上傳檔案，也不連線至公司內部主機或內網 API。</span>
         </div>
       </section>
 
-      <section id="message" class="message info">資料載入中</section>
+      <section id="message" class="message info">請選擇年度供水日報表 Excel 檔案。</section>
 
-      <section id="exportPanel" class="panel export-panel" hidden>
+      <section id="uploadPanel" class="panel upload-panel">
         <div>
-          <h2>公開下載檔</h2>
-          <p id="exportMeta">已產製公開發布檔案。</p>
+          <h2>上傳水量資料</h2>
+          <p id="uploadMeta">請選擇既有格式之年度供水日報表，例如 `115供水日報表新格式（五區）.xlsx`。</p>
         </div>
-        <div id="downloadList" class="download-list"></div>
+        <label class="upload-field">
+          <span>Excel 檔案</span>
+          <input id="fileInput" type="file" accept=".xlsx,.xls,.xlsm" />
+        </label>
       </section>
 
-      <section id="previewPanel" class="panel preview-panel" hidden>
-        <div class="panel-header">
-          <h2>資訊圖表預覽</h2>
-          <span id="previewMeta">PNG</span>
+      <section id="datePanel" class="panel date-panel" hidden>
+        <div>
+          <h2>資料日期</h2>
+          <p id="dateMeta">請先上傳 Excel 檔案。</p>
         </div>
-        <img id="exportPreview" alt="五區水情資訊圖表預覽" />
+        <form id="dateForm" class="date-form">
+          <label>
+            年
+            <select id="yearSelect" aria-label="選擇年份"></select>
+          </label>
+          <label>
+            月
+            <select id="monthSelect" aria-label="選擇月份"></select>
+          </label>
+          <label>
+            日
+            <select id="daySelect" aria-label="選擇日期"></select>
+          </label>
+        </form>
       </section>
 
       <section class="summary-grid">
@@ -155,6 +171,8 @@
       </section>
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" integrity="sha256-yVBhl8r4CaB1tt7h2g02+xnacVj/6KiOewyWxdhiPJk=" crossorigin="anonymous"></script>
+    <script src="./water_calc.js"></script>
     <script src="./app.js"></script>
   </body>
 </html>

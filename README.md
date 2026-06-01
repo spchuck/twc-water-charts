@@ -9,4 +9,4 @@
 
 ## 發布原則
 
-本 repository 僅放置可公開之靜態網頁檔案。五區水情外站版本只讀取同站 `data.json`，不呼叫公司內網、`localhost` 或本機 API。
+本 repository 僅放置可公開之靜態網頁檔案。五區水情外站版本由使用者於瀏覽器端選擇 Excel 檔案後解析資料，不上傳 Excel，不呼叫公司內網、`localhost` 或本機 API。

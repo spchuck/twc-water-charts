@@ -22,32 +22,57 @@
   line-height: 1.55;
 }
 
-.download-list {
+.upload-panel,
+.date-panel {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: flex-end;
+  align-items: end;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 14px;
+  padding: 14px 16px;
 }
 
-.download-card {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 42px;
-  border-radius: 6px;
-  background: #1f4e79;
-  color: #ffffff;
+.upload-panel h2,
+.date-panel h2 {
+  margin: 0;
+  color: #1f4e63;
+  font-size: 22px;
+  line-height: 1.2;
+}
+
+.upload-panel p,
+.date-panel p {
+  margin: 6px 0 0;
+  color: #607080;
+  font-size: 15px;
+}
+
+.upload-field {
+  display: grid;
+  gap: 6px;
+  min-width: min(100%, 420px);
+  color: #607080;
+  font-size: 14px;
   font-weight: 800;
-  padding: 9px 14px;
-  text-decoration: none;
 }
 
-.download-card.secondary {
-  background: #5b6f82;
+.upload-field input {
+  min-height: 42px;
+  border: 1px solid #cdd8e3;
+  border-radius: 6px;
+  background: #ffffff;
+  padding: 8px 10px;
 }
 
-.download-card:hover {
-  filter: brightness(1.06);
+.date-form {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(96px, 1fr));
+  gap: 10px;
+  min-width: min(100%, 360px);
+}
+
+.date-form select {
+  min-height: 42px;
 }
 
 @media (max-width: 1120px) {
@@ -55,7 +80,15 @@
     grid-template-columns: 1fr;
   }
 
-  .download-list {
-    justify-content: flex-start;
+  .upload-panel,
+  .date-panel {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 520px) {
+  .date-form {
+    grid-template-columns: 1fr;
   }
 }

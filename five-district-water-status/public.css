@@ -1,0 +1,61 @@
+.public-toolbar {
+  grid-template-columns: minmax(260px, 1fr) minmax(260px, 0.8fr);
+}
+
+.public-note {
+  align-self: stretch;
+  display: grid;
+  gap: 6px;
+  align-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 6px;
+  padding: 14px 16px;
+  color: #ffffff;
+}
+
+.public-note strong {
+  font-size: 1.05rem;
+}
+
+.public-note span {
+  color: rgba(255, 255, 255, 0.86);
+  line-height: 1.55;
+}
+
+.download-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.download-card {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  border-radius: 6px;
+  background: #1f4e79;
+  color: #ffffff;
+  font-weight: 800;
+  padding: 9px 14px;
+  text-decoration: none;
+}
+
+.download-card.secondary {
+  background: #5b6f82;
+}
+
+.download-card:hover {
+  filter: brightness(1.06);
+}
+
+@media (max-width: 1120px) {
+  .public-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .download-list {
+    justify-content: flex-start;
+  }
+}

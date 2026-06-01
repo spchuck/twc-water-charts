@@ -1,0 +1,380 @@
+{
+  "ok": true,
+  "generatedAt": "2026-06-01T17:46:52",
+  "date": {
+    "year": 115,
+    "month": 5,
+    "day": 28,
+    "label": "115年05月28日"
+  },
+  "source": {
+    "rawSheet": "原水05",
+    "rawRow": 31,
+    "supplySheet": "供水量05",
+    "supplyRow": 30
+  },
+  "digest": [
+    {
+      "label": "月",
+      "value": 5,
+      "display": "5"
+    },
+    {
+      "label": "日",
+      "value": 28,
+      "display": "28"
+    },
+    {
+      "label": "原水總取水量",
+      "value": 628079,
+      "display": "628,079"
+    },
+    {
+      "label": "總出水量",
+      "value": 637573,
+      "display": "637,573"
+    },
+    {
+      "label": "支(受)援水量",
+      "value": 42832,
+      "display": "42,832"
+    },
+    {
+      "label": "計算後供水量",
+      "value": 594741,
+      "display": "594,741"
+    },
+    {
+      "label": "各場所統計供水量",
+      "value": 582178,
+      "display": "582,178"
+    }
+  ],
+  "sections": {
+    "reservoir": [
+      {
+        "name": "仁義潭水庫",
+        "level": 95.16,
+        "storage": 544.76,
+        "rate": 22.152009401469588
+      },
+      {
+        "name": "蘭潭水庫",
+        "level": 63.13,
+        "storage": 155.68,
+        "rate": 16.927258888768076
+      },
+      {
+        "name": "蘭潭-仁義潭水庫合計",
+        "level": null,
+        "storage": 700.44,
+        "rate": 20.72988466626614
+      },
+      {
+        "name": "湖山水庫",
+        "level": 188.07,
+        "storage": 1356.66,
+        "rate": 26.91251735766713
+      }
+    ],
+    "outflow": [
+      {
+        "name": "公園淨水場",
+        "value": 51393
+      },
+      {
+        "name": "水上淨水場",
+        "value": 110521
+      },
+      {
+        "name": "蘭潭淨水場",
+        "value": 27875
+      },
+      {
+        "name": "湖山淨水場",
+        "value": 254604
+      },
+      {
+        "name": "林內淨水場",
+        "value": 156741
+      },
+      {
+        "name": "小型淨水場",
+        "value": 29171
+      },
+      {
+        "name": "台化",
+        "value": 7268
+      },
+      {
+        "name": "出水量合計",
+        "value": 637573
+      }
+    ],
+    "rawWater": [
+      {
+        "name": "仁義潭",
+        "value": 54048
+      },
+      {
+        "name": "蘭潭",
+        "value": 32762
+      },
+      {
+        "name": "嘉南大圳",
+        "value": 106320
+      },
+      {
+        "name": "竹崎所地面水",
+        "value": 21927
+      },
+      {
+        "name": "新港所地下水",
+        "value": 2065
+      },
+      {
+        "name": "民雄所地下水",
+        "value": 2985
+      },
+      {
+        "name": "集集堰",
+        "value": 245136
+      },
+      {
+        "name": "湖山水庫",
+        "value": 151624
+      },
+      {
+        "name": "合計",
+        "value": 628079
+      }
+    ],
+    "crossSupport": [
+      {
+        "name": "五區支援六區",
+        "value": 1922
+      },
+      {
+        "name": "五區支援11區",
+        "value": 57760
+      },
+      {
+        "name": "六區支援五區",
+        "value": 16850
+      }
+    ],
+    "yunlinSupport": [
+      {
+        "name": "台一線",
+        "value": 65145
+      },
+      {
+        "name": "複線",
+        "value": 29504
+      }
+    ],
+    "minxiongSupport": [
+      {
+        "name": "華興橋",
+        "value": 15041
+      },
+      {
+        "name": "共同管溝",
+        "value": 2640
+      }
+    ],
+    "control": [
+      {
+        "name": "嘉義所",
+        "supply": 140636,
+        "control": 131406,
+        "difference": 9230,
+        "differenceRate": 7.024032388171012
+      },
+      {
+        "name": "義竹所",
+        "supply": 27325,
+        "control": 25697,
+        "difference": 1628,
+        "differenceRate": 6.335369887535509
+      },
+      {
+        "name": "新港所",
+        "supply": 23933,
+        "control": 24574,
+        "difference": -641,
+        "differenceRate": -2.608447953121185
+      },
+      {
+        "name": "民雄所",
+        "supply": 67832,
+        "control": 65216,
+        "difference": 2616,
+        "differenceRate": 4.0112855740922475
+      },
+      {
+        "name": "竹崎所",
+        "supply": 19903,
+        "control": 18753,
+        "difference": 1150,
+        "differenceRate": 6.132352156988215
+      },
+      {
+        "name": "朴子所",
+        "supply": 42045,
+        "control": 26573,
+        "difference": 15472,
+        "differenceRate": 58.224513604034165
+      },
+      {
+        "name": "斗六所",
+        "supply": 74020,
+        "control": 70822,
+        "difference": 3198,
+        "differenceRate": 4.515546016774449
+      },
+      {
+        "name": "斗南所",
+        "supply": 18564,
+        "control": 21154,
+        "difference": -2590,
+        "differenceRate": -12.243547319655857
+      },
+      {
+        "name": "古坑所",
+        "supply": 21572,
+        "control": 20993,
+        "difference": 579,
+        "differenceRate": 2.7580622112132613
+      },
+      {
+        "name": "虎尾所",
+        "supply": 50847,
+        "control": 51232,
+        "difference": -385,
+        "differenceRate": -0.7514834478450968
+      },
+      {
+        "name": "西螺所",
+        "supply": 36540,
+        "control": 36737,
+        "difference": -197,
+        "differenceRate": -0.5362441135639818
+      },
+      {
+        "name": "台西所",
+        "supply": 27398,
+        "control": 26950,
+        "difference": 448,
+        "differenceRate": 1.6623376623376624
+      },
+      {
+        "name": "北港所",
+        "supply": 31563,
+        "control": 31227,
+        "difference": 336,
+        "differenceRate": 1.0759919300605245
+      }
+    ],
+    "digestChart": [
+      {
+        "name": "原水總取水量",
+        "value": 628079
+      },
+      {
+        "name": "總出水量",
+        "value": 637573
+      },
+      {
+        "name": "支(受)援水量",
+        "value": 42832
+      },
+      {
+        "name": "計算後供水量",
+        "value": 594741
+      },
+      {
+        "name": "各場所統計供水量",
+        "value": 582178
+      }
+    ]
+  },
+  "audit": [
+    {
+      "item": "來源檔案",
+      "status": "通過",
+      "detail": "115供水日報表新格式（五區）.xlsx"
+    },
+    {
+      "item": "來源工作表：原水",
+      "status": "通過",
+      "detail": "原水05 第 31 列"
+    },
+    {
+      "item": "來源工作表：供水",
+      "status": "通過",
+      "detail": "供水量05 第 30 列"
+    },
+    {
+      "item": "選取日期",
+      "status": "通過",
+      "detail": "115年05月28日"
+    },
+    {
+      "item": "原水：水庫水位",
+      "status": "通過",
+      "detail": "D:F 均有資料"
+    },
+    {
+      "item": "原水：有效蓄水量",
+      "status": "通過",
+      "detail": "G:I 均有資料"
+    },
+    {
+      "item": "原水：主要原水取水量",
+      "status": "通過",
+      "detail": "O:P、S、V、AB 均有資料"
+    },
+    {
+      "item": "原水：地下水量",
+      "status": "通過",
+      "detail": "AD:AM 至少一欄有資料且 AN 合計可計算"
+    },
+    {
+      "item": "原水：濁度",
+      "status": "通過",
+      "detail": "AO:AR 均有資料"
+    },
+    {
+      "item": "供水：各淨水場出水量",
+      "status": "通過",
+      "detail": "D:J 均有資料"
+    },
+    {
+      "item": "供水：各服務所供水量",
+      "status": "通過",
+      "detail": "L:X 均有資料"
+    },
+    {
+      "item": "供水：支受援水量",
+      "status": "通過",
+      "detail": "Z:AG 均有資料"
+    },
+    {
+      "item": "總量勾稽：出水量合計",
+      "status": "通過",
+      "detail": "彙整表 J22=637,573；各廠加總=637,573"
+    },
+    {
+      "item": "總量勾稽：各場所統計供水量",
+      "status": "通過",
+      "detail": "出水量 Y3=582,178；彙整表2 G2=582,178"
+    },
+    {
+      "item": "總量勾稽：計算後供水量",
+      "status": "通過",
+      "detail": "637,573 - 42,832 = 594,741"
+    }
+  ],
+  "downloads": []
+}

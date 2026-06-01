@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>五區水情公開資訊圖表</title>
+    <link rel="stylesheet" href="./app.css" />
+    <link rel="stylesheet" href="./public.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="toolbar public-toolbar" aria-label="公開資料摘要">
+        <div class="brand">
+          <h1>五區水情公開資訊圖表</h1>
+          <p id="sourceLine">資料載入中</p>
+        </div>
+        <div class="public-note">
+          <strong>靜態外站版本</strong>
+          <span>本頁僅讀取同站公開資料檔，不連線至公司內部主機或內網 API。</span>
+        </div>
+      </section>
+
+      <section id="message" class="message info">資料載入中</section>
+
+      <section id="exportPanel" class="panel export-panel" hidden>
+        <div>
+          <h2>公開下載檔</h2>
+          <p id="exportMeta">已產製公開發布檔案。</p>
+        </div>
+        <div id="downloadList" class="download-list"></div>
+      </section>
+
+      <section id="previewPanel" class="panel preview-panel" hidden>
+        <div class="panel-header">
+          <h2>資訊圖表預覽</h2>
+          <span id="previewMeta">PNG</span>
+        </div>
+        <img id="exportPreview" alt="五區水情資訊圖表預覽" />
+      </section>
+
+      <section class="summary-grid">
+        <article class="metric">
+          <span>原水總取水量</span>
+          <strong id="metricRaw">--</strong>
+          <small>CMD</small>
+        </article>
+        <article class="metric">
+          <span>總出水量</span>
+          <strong id="metricOutflow">--</strong>
+          <small>CMD</small>
+        </article>
+        <article class="metric">
+          <span>支(受)援水量</span>
+          <strong id="metricSupport">--</strong>
+          <small>CMD</small>
+        </article>
+        <article class="metric">
+          <span>計算後供水量</span>
+          <strong id="metricCalculated">--</strong>
+          <small>CMD</small>
+        </article>
+        <article class="metric">
+          <span>各場所統計供水量</span>
+          <strong id="metricSiteTotal">--</strong>
+          <small>CMD</small>
+        </article>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <h2>水庫水情</h2>
+          <span>水位 / 有效蓄水量 / 蓄水率</span>
+        </div>
+        <div id="reservoirCards" class="reservoir-grid"></div>
+      </section>
+
+      <section class="chart-layout">
+        <section class="panel">
+          <div class="panel-header">
+            <h2>出水量</h2>
+            <span>CMD</span>
+          </div>
+          <div id="outflowChart" class="bar-list"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <h2>原水量</h2>
+            <span>CMD</span>
+          </div>
+          <div id="rawWaterChart" class="bar-list"></div>
+        </section>
+      </section>
+
+      <section class="chart-layout three">
+        <section class="panel">
+          <div class="panel-header">
+            <h2>跨區處支(受)援</h2>
+            <span>CMD</span>
+          </div>
+          <div id="crossSupportChart" class="bar-list compact"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <h2>雲林支援嘉義</h2>
+            <span>CMD</span>
+          </div>
+          <div id="yunlinSupportChart" class="bar-list compact"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <h2>民雄支援嘉義</h2>
+            <span>CMD</span>
+          </div>
+          <div id="minxiongSupportChart" class="bar-list compact"></div>
+        </section>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <h2>各廠所供水量管控差異</h2>
+          <span>CMD / %</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>廠所</th>
+                <th>供水量</th>
+                <th>管控值</th>
+                <th>差異</th>
+                <th>差異率</th>
+              </tr>
+            </thead>
+            <tbody id="controlTable"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <h2>彙整表2摘要</h2>
+          <span>CMD</span>
+        </div>
+        <div id="digestChart" class="bar-list digest"></div>
+      </section>
+
+      <section class="panel audit-panel">
+        <div class="panel-header">
+          <h2>查核結果</h2>
+        </div>
+        <div id="auditList" class="audit-list"></div>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

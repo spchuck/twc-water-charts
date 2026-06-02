@@ -35,10 +35,14 @@
         padding: 28px 0 44px;
       }
 
-      header {
+      header,
+      .card {
         border: 1px solid var(--line);
         border-radius: 8px;
         background: var(--panel);
+      }
+
+      header {
         padding: 22px 24px;
       }
 
@@ -49,11 +53,16 @@
         line-height: 1.25;
       }
 
+      .lead,
+      .card p,
+      footer {
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
       .lead {
         margin: 10px 0 0;
-        color: var(--muted);
         font-size: 16px;
-        line-height: 1.7;
       }
 
       .grid {
@@ -67,9 +76,6 @@
         display: grid;
         gap: 10px;
         min-height: 180px;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: var(--panel);
         padding: 18px;
       }
 
@@ -87,9 +93,7 @@
 
       .card p {
         margin: 0;
-        color: var(--muted);
         font-size: 15px;
-        line-height: 1.65;
       }
 
       .tag-row {
@@ -134,9 +138,7 @@
 
       footer {
         margin-top: 16px;
-        color: var(--muted);
         font-size: 13px;
-        line-height: 1.6;
       }
 
       @media (max-width: 760px) {
@@ -171,10 +173,10 @@
         <article class="card primary">
           <div class="tag-row">
             <span class="tag">五區水情</span>
-            <span class="tag">靜態外站</span>
+            <span class="tag">瀏覽器端解析</span>
           </div>
           <h2>五區水情公開資訊圖表</h2>
-          <p>呈現 115年05月28日原水、出水、支援水量、水庫蓄水率及各廠所供水管控差異。頁面只讀取同目錄公開資料檔。</p>
+          <p>使用者上傳年度供水日報表 Excel 後，頁面於瀏覽器端解析資料，並可用年月日選單查詢水情圖表；Excel 不會上傳至伺服器。</p>
           <div class="actions">
             <a class="button" href="five-district-water-status/">開啟儀表板</a>
           </div>
@@ -229,7 +231,7 @@
         </article>
       </section>
 
-      <footer>發布資料以可公開靜態檔案為限；若後續需更新五區水情資料，請於本機重新產製外站包後再同步至本 repository。</footer>
+      <footer>發布資料以可公開靜態檔案為限。五區水情儀表板僅於使用者瀏覽器端讀取所選 Excel，不提供後端上傳或內網查詢服務。</footer>
     </main>
   </body>
 </html>

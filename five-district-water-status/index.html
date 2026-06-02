@@ -220,7 +220,7 @@
             return response.text();
           })
           .then((source) => {
-            const repaired = source.replace("payload.date.label|；", "payload.date.label}；");
+            const repaired = source.replace(/payload\.date\.label\|(?=.{0,12}本檔案共可查詢)/u, "payload.date.label}");
             const script = document.createElement("script");
             script.text = repaired;
             document.currentScript.after(script);

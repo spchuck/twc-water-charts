@@ -209,6 +209,7 @@
     <script src="./app.js"></script>
     <script>
       (() => {
+        const loaderScript = document.currentScript;
         if (typeof window.renderSelectedDate === "function") {
           return;
         }
@@ -223,7 +224,11 @@
             const repaired = source.replace(/payload\.date\.label\|/u, "payload.date.label}");
             const script = document.createElement("script");
             script.text = repaired;
-            document.currentScript.after(script);
+            if (loaderScript?.parentNode) {
+              loaderScript.after(script);
+            } else {
+              document.body.appendChild(script);
+            }
           })
           .catch(() => {
             const target = document.querySelector("#message");

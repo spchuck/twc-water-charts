@@ -54,6 +54,35 @@
         </form>
       </section>
 
+      <section id="exportPanel" class="panel export-panel" hidden>
+        <div>
+          <h2>匯出圖表</h2>
+          <p id="exportMeta">請先上傳 Excel 並選擇日期。</p>
+        </div>
+        <form id="exportForm" class="export-form">
+          <label>
+            方向
+            <select id="exportOrientation" aria-label="選擇匯出方向">
+              <option value="portrait" selected>直式</option>
+              <option value="landscape">橫式</option>
+            </select>
+          </label>
+          <label>
+            尺寸
+            <select id="exportSize" aria-label="選擇匯出尺寸">
+              <option value="long" selected>長圖</option>
+              <option value="a4">A4</option>
+              <option value="a3">A3</option>
+              <option value="slide_16_9">簡報 16:9</option>
+              <option value="slide_4_3">簡報 4:3</option>
+              <option value="square">方形</option>
+              <option value="mobile">手機直式</option>
+            </select>
+          </label>
+          <button id="exportButton" type="button">下載 PNG</button>
+        </form>
+      </section>
+
       <section class="summary-grid">
         <article class="metric">
           <span>原水總取水量</span>

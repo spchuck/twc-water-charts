@@ -1,0 +1,62 @@
+.average-range-form {
+  display: grid;
+  grid-template-columns: minmax(170px, 1fr) minmax(170px, 1fr) minmax(128px, 0.7fr) minmax(128px, 0.7fr);
+  gap: 10px;
+  min-width: min(100%, 640px);
+  align-items: end;
+}
+
+.average-summary-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.average-table-list {
+  display: grid;
+  gap: 16px;
+  padding: 16px;
+}
+
+.average-group {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.average-group h3 {
+  margin: 0;
+  border-bottom: 1px solid var(--line);
+  background: #f8fbfd;
+  color: var(--primary-dark);
+  font-size: 20px;
+  line-height: 1.25;
+  padding: 12px 14px;
+}
+
+.average-group table {
+  font-size: 17px;
+}
+
+.average-group td:nth-child(2),
+.average-group td:nth-child(3),
+.average-group td:nth-child(4),
+.average-group th:nth-child(2),
+.average-group th:nth-child(3),
+.average-group th:nth-child(4) {
+  text-align: right;
+}
+
+.average-empty {
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  color: var(--muted);
+  font-weight: 800;
+  padding: 16px;
+}
+
+@media (max-width: 1120px) {
+  .average-range-form,
+  .average-summary-grid {
+    grid-template-columns: 1fr;
+  }
+}

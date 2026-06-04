@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>五區水情區間平均值</title>
+    <link rel="stylesheet" href="./app.css" />
+    <link rel="stylesheet" href="./public.css" />
+    <link rel="stylesheet" href="./average.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="toolbar public-toolbar" aria-label="公開資料摘要">
+        <div class="brand">
+          <h1>五區水情區間平均值</h1>
+          <p id="sourceLine">請先選擇水量 Excel 檔案</p>
+        </div>
+        <div class="public-note">
+          <strong>日期區間平均值</strong>
+          <span>本頁僅在瀏覽器讀取您選擇的 Excel 檔，不上傳檔案，也不連線至公司內部主機或內網 API。</span>
+        </div>
+      </section>
+
+      <section id="message" class="message info">請選擇年度供水日報表 Excel 檔案。</section>
+
+      <section class="panel upload-panel">
+        <div>
+          <h2>上傳水量資料</h2>
+          <p id="uploadMeta">請選擇既有格式之年度供水日報表，例如 `115供水日報表新格式（五區）.xlsx`。</p>
+        </div>
+        <label class="upload-field">
+          <span>Excel 檔案</span>
+          <input id="fileInput" type="file" accept=".xlsx,.xls,.xlsm" />
+        </label>
+      </section>
+
+      <section id="rangePanel" class="panel date-panel" hidden>
+        <div>
+          <h2>日期範圍</h2>
+          <p id="rangeMeta">請先上傳 Excel 檔案。</p>
+        </div>
+        <form id="rangeForm" class="average-range-form">
+          <label>
+            起日
+            <select id="startDateSelect" aria-label="選擇起日"></select>
+          </label>
+          <label>
+            迄日
+            <select id="endDateSelect" aria-label="選擇迄日"></select>
+          </label>
+          <button id="calculateButton" type="submit">計算平均值</button>
+          <button id="downloadCsvButton" type="button" disabled>下載 CSV</button>
+        </form>
+      </section>
+
+      <section id="resultPanel" hidden>
+        <section class="summary-grid average-summary-grid">
+          <article class="metric">
+            <span>納入天數</span>
+            <strong id="metricDayCount">--</strong>
+            <small>日</small>
+          </article>
+          <article class="metric">
+            <span>原水總取水量平均</span>
+            <strong id="metricRawAverage">--</strong>
+            <small>CMD</small>
+          </article>
+          <article class="metric">
+            <span>總出水量平均</span>
+            <strong id="metricOutflowAverage">--</strong>
+            <small>CMD</small>
+          </article>
+          <article class="metric">
+            <span>支(受)援水量平均</span>
+            <strong id="metricSupportAverage">--</strong>
+            <small>CMD</small>
+          </article>
+          <article class="metric">
+            <span>計算後供水量平均</span>
+            <strong id="metricCalculatedAverage">--</strong>
+            <small>CMD</small>
+          </article>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <h2>區間平均值明細</h2>
+            <span id="resultMeta">CMD / 萬m3</span>
+          </div>
+          <div id="averageTables" class="average-table-list"></div>
+        </section>
+      </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" integrity="sha256-yVBhl8r4CaB1tt7h2g02+xnacVj/6KiOewyWxdhiPJk=" crossorigin="anonymous"></script>
+    <script src="./water_calc.js"></script>
+    <script src="./average.js"></script>
+  </body>
+</html>

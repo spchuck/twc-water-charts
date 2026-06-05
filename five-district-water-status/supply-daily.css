@@ -43,6 +43,36 @@
   font: inherit;
 }
 
+.supply-export-panel {
+  align-items: flex-start;
+}
+
+.supply-export-form {
+  display: grid;
+  grid-template-columns: minmax(140px, 0.45fr) minmax(180px, 0.65fr) auto;
+  gap: 14px;
+  align-items: end;
+  width: 100%;
+}
+
+.supply-export-form label {
+  display: grid;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.supply-export-form select {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px;
+  background: white;
+  color: var(--ink);
+  font: inherit;
+}
+
 .supply-date-form select[multiple] {
   min-height: 178px;
 }
@@ -189,6 +219,7 @@
 @media (max-width: 900px) {
   .supply-upload-grid,
   .supply-date-form,
+  .supply-export-form,
   .supply-summary-grid {
     grid-template-columns: 1fr;
   }

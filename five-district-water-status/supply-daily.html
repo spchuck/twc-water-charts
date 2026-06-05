@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>各廠所供水量日報表</title>
+    <link rel="stylesheet" href="./app.css" />
+    <link rel="stylesheet" href="./public.css" />
+    <link rel="stylesheet" href="./supply-daily.css" />
+  </head>
+  <body>
+    <main class="app-shell supply-daily-shell">
+      <section class="toolbar public-toolbar" aria-label="公開資料摘要">
+        <div class="brand">
+          <h1>各廠所供水量日報表</h1>
+          <p id="sourceLine">請先選擇供水日報表及嘉科每日用水量檔案</p>
+        </div>
+        <div class="public-note">
+          <strong>瀏覽器端查詢版本</strong>
+          <span>本頁僅在瀏覽器讀取您選擇的 Excel 檔，不上傳檔案，也不連線至公司內部主機或內網 API。</span>
+        </div>
+      </section>
+
+      <section id="message" class="message info">請選擇 2 個來源檔案。</section>
+
+      <section class="panel upload-panel supply-upload-panel">
+        <div>
+          <h2>上傳來源資料</h2>
+          <p id="uploadMeta">請選擇既有格式之年度供水日報表，以及嘉科每日用水量 Excel 檔案。</p>
+        </div>
+        <div class="supply-upload-grid">
+          <label class="upload-field">
+            <span>供水日報表</span>
+            <input id="waterFileInput" type="file" accept=".xlsx,.xls,.xlsm" />
+          </label>
+          <label class="upload-field">
+            <span>嘉科每日用水量</span>
+            <input id="jiakeFileInput" type="file" accept=".xls,.xlsx,.xlsm" />
+          </label>
+        </div>
+      </section>
+
+      <section id="datePanel" class="panel date-panel supply-date-panel" hidden>
+        <div>
+          <h2>日期選擇</h2>
+          <p id="dateMeta">請選擇欲呈現之日期，最多 7 日。</p>
+        </div>
+        <form id="dateForm" class="supply-date-form">
+          <label>
+            日期
+            <select id="dateSelect" multiple size="7" aria-label="選擇多個日期，最多七日"></select>
+          </label>
+          <label>
+            差異圖日期
+            <select id="chartDateSelect" aria-label="選擇差異圖日期"></select>
+          </label>
+          <button id="renderButton" type="submit">產生日報表</button>
+        </form>
+      </section>
+
+      <section id="resultPanel" hidden>
+        <section class="summary-grid supply-summary-grid">
+          <article class="metric">
+            <span>選取日期</span>
+            <strong id="metricDateCount">--</strong>
+            <small>日</small>
+          </article>
+          <article class="metric">
+            <span>最新選取日期</span>
+            <strong id="metricLatestDate">--</strong>
+            <small>供水日報表 / 嘉科</small>
+          </article>
+          <article class="metric">
+            <span>嘉科拆分規則</span>
+            <strong>朴子扣除</strong>
+            <small>嘉科無獨立管控值</small>
+          </article>
+        </section>
+
+        <section class="panel supply-table-panel">
+          <div class="panel-header">
+            <h2>各廠所供水量管控對照</h2>
+            <span id="tableMeta">CMD</span>
+          </div>
+          <div id="supplyTableWrap" class="supply-table-wrap"></div>
+        </section>
+
+        <section class="panel supply-chart-panel">
+          <div class="panel-header">
+            <h2>當日管控差異圖</h2>
+            <span id="chartMeta">CMD</span>
+          </div>
+          <div id="differenceChart" class="difference-chart" role="img" aria-label="各廠所當日供水量管控差異圖"></div>
+        </section>
+      </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" integrity="sha256-yVBhl8r4CaB1tt7h2g02+xnacVj/6KiOewyWxdhiPJk=" crossorigin="anonymous"></script>
+    <script src="./water_calc.js"></script>
+    <script src="./supply-daily.js"></script>
+  </body>
+</html>

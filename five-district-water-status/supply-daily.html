@@ -92,6 +92,35 @@
           </div>
           <div id="differenceChart" class="difference-chart" role="img" aria-label="各廠所當日供水量管控差異圖"></div>
         </section>
+
+        <section class="panel supply-export-panel">
+          <div>
+            <h2>匯出資訊圖表</h2>
+            <p id="exportMeta">請先產生日報表後再匯出。</p>
+          </div>
+          <form id="exportForm" class="supply-export-form">
+            <label>
+              方向
+              <select id="exportOrientation" aria-label="選擇匯出方向">
+                <option value="portrait" selected>直式</option>
+                <option value="landscape">橫式</option>
+              </select>
+            </label>
+            <label>
+              尺寸
+              <select id="exportSize" aria-label="選擇匯出尺寸">
+                <option value="long" selected>長圖</option>
+                <option value="a4">A4</option>
+                <option value="a3">A3</option>
+                <option value="slide_16_9">簡報 16:9</option>
+                <option value="slide_4_3">簡報 4:3</option>
+                <option value="square">方形</option>
+                <option value="mobile">手機直式</option>
+              </select>
+            </label>
+            <button id="exportButton" type="button">下載 PNG</button>
+          </form>
+        </section>
       </section>
     </main>
 

@@ -119,7 +119,7 @@
     const button = document.querySelector("#exportPdfButton");
     button.disabled = true;
     try {
-      const printWindow = window.open("", "_blank", "noopener,noreferrer");
+      const printWindow = window.open("", "_blank");
       if (!printWindow) {
         throw new Error("瀏覽器封鎖彈出視窗，請允許本頁開啟列印視窗後再試。");
       }

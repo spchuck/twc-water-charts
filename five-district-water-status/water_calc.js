@@ -136,6 +136,14 @@
     return columns.reduce((total, column) => total + zeroIfBlank(values[column]), 0);
   }
 
+  function jijiRawWater(values) {
+    return zeroIfBlank(values[22]) + zeroIfBlank(values[26]);
+  }
+
+  function hushanReservoirRawWater(values) {
+    return zeroIfBlank(values[24]) + zeroIfBlank(values[27]);
+  }
+
   function isMissing(value) {
     if (value === null || value === undefined) {
       return true;
@@ -242,7 +250,7 @@
     const supportRow = [supplyValues[27], supplyValues[28], supplyValues[26], supplyValues[30], supplyValues[29], supplyValues[33], supplyValues[30], supplyValues[31]];
     const supportNet = zeroIfBlank(supportRow[0]) + zeroIfBlank(supportRow[1]) - zeroIfBlank(supportRow[2]);
     const yunlinMutual = zeroIfBlank(supportRow[4]) + zeroIfBlank(supportRow[5]);
-    const rawIntake = [rawValues[15], rawValues[16], rawValues[19], rawValues[32], zeroIfBlank(rawValues[31]) + zeroIfBlank(rawValues[30]), 250000, zeroIfBlank(rawValues[22]) + zeroIfBlank(rawValues[26]), rawValues[28], supplyValues[32], sumColumns(rawValues, REVIEW_YUNLIN_GROUNDWATER_COLS), 195000];
+    const rawIntake = [rawValues[15], rawValues[16], rawValues[19], rawValues[32], zeroIfBlank(rawValues[31]) + zeroIfBlank(rawValues[30]), 250000, jijiRawWater(rawValues), hushanReservoirRawWater(rawValues), supplyValues[32], sumColumns(rawValues, REVIEW_YUNLIN_GROUNDWATER_COLS), 195000];
     const plantSupply = [supplyValues[6], supplyValues[4], supplyValues[5]];
     const chiayiTotal = plantSupply.reduce((total, value) => total + zeroIfBlank(value), 0);
     const yunlinPlants = [supplyValues[8], supplyValues[7]];
@@ -350,7 +358,7 @@
     return {
       reservoir: [["仁義潭水庫", raw[4], raw[7], multiply(raw[10], 100)], ["蘭潭水庫", raw[5], raw[8], multiply(raw[11], 100)], ["蘭潭-仁義潭水庫合計", null, combinedStorage, combinedRate], ["湖山水庫", raw[6], raw[9], multiply(raw[12], 100)]],
       outflow: [["公園淨水場", supply[6]], ["水上淨水場", supply[4]], ["蘭潭淨水場", supply[5]], ["湖山淨水場", supply[8]], ["林內淨水場", supply[7]], ["小型淨水場", supply[9]], ["台化", supply[10]], ["出水量合計", supply[11]]],
-      raw_water: [["仁義潭", raw[15]], ["蘭潭", raw[16]], ["嘉南大圳", raw[19]], ["竹崎所地面水", raw[32]], ["新港所地下水", raw[30]], ["民雄所地下水", raw[31]], ["集集堰", zeroIfBlank(raw[22]) + zeroIfBlank(raw[26])], ["湖山水庫", raw[28]], ["伏流水", supply[32]], ["雲林地下水", sumColumns(raw, REVIEW_YUNLIN_GROUNDWATER_COLS)], ["合計", digest[2]]],
+      raw_water: [["仁義潭", raw[15]], ["蘭潭", raw[16]], ["嘉南大圳", raw[19]], ["竹崎所地面水", raw[32]], ["新港所地下水", raw[30]], ["民雄所地下水", raw[31]], ["集集堰", jijiRawWater(raw)], ["湖山水庫", hushanReservoirRawWater(raw)], ["伏流水", supply[32]], ["雲林地下水", sumColumns(raw, REVIEW_YUNLIN_GROUNDWATER_COLS)], ["合計", digest[2]]],
       cross_support: [["五區支援六區", supply[27]], ["五區支援11區", supply[28]], ["六區支援五區", supply[26]]],
       yunlin_support: [["台一線", supply[29]], ["複線", supply[33]]],
       minxiong_support: [["華興橋", supply[30]], ["共同管溝", supply[31]]],

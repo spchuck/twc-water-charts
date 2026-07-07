@@ -10,6 +10,7 @@
   const form = document.querySelector("#controlForm");
   const grid = document.querySelector("#controlGrid");
   const resetButton = document.querySelector("#resetControlButton");
+  const storageKey = "fiveDistrictSupplyDailyControlValues";
   let baseValues = {};
   let customValues = {};
 
@@ -21,11 +22,12 @@
   function initControls() {
     const sourceKey = selectedDateKeys.at(-1) || availableDates.at(-1)?.key;
     const rows = waterDataset?.records[sourceKey]?.sections?.control || [];
+    const storedValues = loadStoredValues();
     baseValues = {};
     customValues = {};
     for (const row of rows) {
       const name = row.name === PUZI_NAME ? PUZI_SPLIT_NAME : row.name;
-      baseValues[name] = toNumber(row.control);
+      baseValues[name] = storedValues[name] ?? toNumber(row.control);
     }
     renderControls();
     if (panel) {
@@ -43,7 +45,7 @@
       const title = document.createElement("span");
       title.textContent = name;
       const note = document.createElement("small");
-      note.textContent = `原管控值 ${formatNumber(value, 0)} CMD`;
+      note.textContent = `目前原管控值 ${formatNumber(value, 0)} CMD`;
       const input = document.createElement("input");
       input.type = "number";
       input.min = "0";
@@ -64,12 +66,32 @@
       return;
     }
     const changed = Object.entries(baseValues).filter(([name, value]) => (customValues[name] ?? value) !== value).length;
-    meta.textContent = changed ? `已手動調整 ${changed} 個廠所管控值；欄位留白可恢復原管控值。` : "目前採用原管控值；如需調整，請輸入新值後套用。";
+    meta.textContent = changed ? `已暫時調整 ${changed} 個廠所管控值；套用後會儲存為新的原管控值。` : "目前採用原管控值；如需調整，請輸入新值後套用並儲存。";
   }
 
   function effectiveControl(name, originalControl) {
     const baseName = name === PUZI_NAME ? PUZI_SPLIT_NAME : name;
     return toNumber(customValues[baseName] ?? baseValues[baseName] ?? originalControl);
+  }
+
+  function loadStoredValues() {
+    try {
+      const text = window.localStorage?.getItem(storageKey);
+      const parsed = text ? JSON.parse(text) : {};
+      return Object.fromEntries(Object.entries(parsed).filter(([, value]) => Number.isFinite(Number(value))).map(([name, value]) => [name, Number(value)]));
+    } catch {
+      return {};
+    }
+  }
+
+  function saveStoredValues(values) {
+    try {
+      window.localStorage?.setItem(storageKey, JSON.stringify(values));
+      return true;
+    } catch {
+      setMessage("管控值已套用，但瀏覽器未允許本機儲存；重新開頁後可能需重新設定。", "error");
+      return false;
+    }
   }
 
   const originalBuildRowsForDate = buildRowsForDate;
@@ -133,10 +155,15 @@
       }
       nextValues[site] = parsed;
     }
-    customValues = nextValues;
+    baseValues = nextValues;
+    customValues = {};
+    const saved = saveStoredValues(baseValues);
+    renderControls();
     renderDailyReport();
     updateMeta();
-    setMessage("已套用管控值設定並重新計算日報表。", "info");
+    if (saved) {
+      setMessage("已儲存為新的原管控值，並重新計算日報表。", "info");
+    }
   });
 
   resetButton?.addEventListener("click", () => {
@@ -145,6 +172,6 @@
     if (selectedDateKeys.length) {
       renderDailyReport();
     }
-    setMessage("已恢復原管控值並重新計算日報表。", "info");
+    setMessage("已恢復目前原管控值並重新計算日報表。", "info");
   });
 })();

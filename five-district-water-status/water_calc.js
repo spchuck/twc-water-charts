@@ -314,3 +314,135 @@
   function reviewDateKey(reviewDate) {
     return `${reviewDate.year}-${String(reviewDate.month).padStart(2, "0")}-${String(reviewDate.day).padStart(2, "0")}`;
   }
+
+  function buildReviewData(workbook, fileName, reviewDate) {
+    const rows = resolveSourceRows(workbook, reviewDate);
+    const rawValues = rawValuesForRow(workbook.Sheets[rows.rawSheetName], reviewDate, rows.rawRow);
+    const supplyValues = supplyValuesForRow(workbook.Sheets[rows.supplySheetName], reviewDate, rows.supplyRow, rawValues);
+    const required = requiredChecks(rawValues, supplyValues);
+    if (!allRequiredChecksPass(required)) {
+      const failed = required.filter((row) => row[1] === "未通過").map((row) => `${row[0]}（${row[2]}）`);
+      throw new Error(`${dateLabel(reviewDate)} 來源資料未完整：${failed.join("；")}`);
+    }
+    const summaryRows = buildSummaryRows(rawValues, supplyValues);
+    summaryRows.digest[0] = reviewDate.month;
+    summaryRows.digest[1] = reviewDate.day;
+    const auditRows = [
+      ["來源檔案", "通過", fileName],
+      ["來源工作表：原水", "通過", `${rows.rawSheetName} 第 ${rows.rawRow} 列`],
+      ["來源工作表：供水", "通過", `${rows.supplySheetName} 第 ${rows.supplyRow} 列`],
+      ["選取日期", "通過", dateLabel(reviewDate)],
+      ...required,
+      ...reconciliationChecks(summaryRows, supplyValues),
+    ];
+    return { reviewDate, rows, fileName, rawValues, supplyValues, summaryRows, auditRows };
+  }
+
+  function metricRows(rows, headers) {
+    return rows.map((row) => Object.fromEntries(headers.map((header, index) => [header, index < row.length ? row[index] : null])));
+  }
+
+  function infographicSections(data) {
+    const raw = data.rawValues;
+    const supply = data.supplyValues;
+    const combinedStorage = zeroIfBlank(raw[7]) + zeroIfBlank(raw[8]);
+    const combinedRate = combinedStorage / (CAPACITY_RENYITAN + CAPACITY_LANTAN) * 100;
+    const digest = data.summaryRows.digest;
+    const siteNames = ["嘉義所", "義竹所", "新港所", "民雄所", "竹崎所", "朴子所", "斗六所", "斗南所", "古坑所", "虎尾所", "西螺所", "台西所", "北港所"];
+    const controlRows = siteNames.map((siteName, index) => {
+      const supplyAmount = supply[12 + index];
+      const controlValue = CONTROL_VALUES[index];
+      const difference = zeroIfBlank(supplyAmount) - controlValue;
+      return [siteName, supplyAmount, controlValue, difference, multiply(safeDivide(difference, controlValue), 100)];
+    });
+    return {
+      reservoir: [["仁義潭水庫", raw[4], raw[7], multiply(raw[10], 100)], ["蘭潭水庫", raw[5], raw[8], multiply(raw[11], 100)], ["蘭潭-仁義潭水庫合計", null, combinedStorage, combinedRate], ["湖山水庫", raw[6], raw[9], multiply(raw[12], 100)]],
+      outflow: [["公園淨水場", supply[6]], ["水上淨水場", supply[4]], ["蘭潭淨水場", supply[5]], ["湖山淨水場", supply[8]], ["林內淨水場", supply[7]], ["小型淨水場", supply[9]], ["台化", supply[10]], ["出水量合計", supply[11]]],
+      raw_water: [["仁義潭", raw[15]], ["蘭潭", raw[16]], ["嘉南大圳", raw[19]], ["竹崎所地面水", raw[32]], ["新港所地下水", raw[30]], ["民雄所地下水", raw[31]], ["集集堰", jijiRawWater(raw)], ["湖山水庫", hushanReservoirRawWater(raw)], ["伏流水", supply[32]], ["雲林地下水", sumColumns(raw, REVIEW_YUNLIN_GROUNDWATER_COLS)], ["合計", digest[2]]],
+      cross_support: [["五區支援六區", supply[27]], ["五區支援11區", supply[28]], ["六區支援五區", supply[26]]],
+      yunlin_support: [["台一線", supply[29]], ["複線", supply[33]]],
+      minxiong_support: [["華興橋", supply[30]], ["共同管溝", supply[31]]],
+      digest_chart: [["原水總取水量", digest[2]], ["總出水量", digest[3]], ["支(受)援水量", digest[4]], ["計算後供水量", digest[5]], ["各場所統計供水量", digest[6]]],
+      control: controlRows,
+    };
+  }
+
+  function buildPayload(data) {
+    const sections = infographicSections(data);
+    const digestLabels = ["月", "日", "原水總取水量", "總出水量", "支(受)援水量", "計算後供水量", "各場所統計供水量"];
+    return {
+      ok: true,
+      generatedAt: new Date().toISOString(),
+      date: { key: reviewDateKey(data.reviewDate), year: data.reviewDate.year, month: data.reviewDate.month, day: data.reviewDate.day, label: dateLabel(data.reviewDate) },
+      source: { rawSheet: data.rows.rawSheetName, rawRow: data.rows.rawRow, supplySheet: data.rows.supplySheetName, supplyRow: data.rows.supplyRow, file: data.fileName },
+      digest: digestLabels.map((label, index) => ({ label, value: data.summaryRows.digest[index], display: formatNumber(data.summaryRows.digest[index]) })),
+      sections: {
+        reservoir: metricRows(sections.reservoir, ["name", "level", "storage", "rate"]),
+        outflow: metricRows(sections.outflow, ["name", "value"]),
+        rawWater: metricRows(sections.raw_water, ["name", "value"]),
+        crossSupport: metricRows(sections.cross_support, ["name", "value"]),
+        yunlinSupport: metricRows(sections.yunlin_support, ["name", "value"]),
+        minxiongSupport: metricRows(sections.minxiong_support, ["name", "value"]),
+        control: metricRows(sections.control, ["name", "supply", "control", "difference", "differenceRate"]),
+        digestChart: metricRows(sections.digest_chart, ["name", "value"]),
+      },
+      audit: metricRows(data.auditRows, ["item", "status", "detail"]),
+    };
+  }
+
+  function collectYears(workbook) {
+    const years = new Set();
+    for (const sheetName of workbook.SheetNames) {
+      if (![RAW_PREFIX, RAW_ALT_PREFIX, SUPPLY_PREFIX, SUPPLY_ALT_PREFIX].some((prefix) => sheetName.startsWith(prefix))) {
+        continue;
+      }
+      const worksheet = workbook.Sheets[sheetName];
+      for (let row = 3; row <= Math.min(maxWorksheetRow(worksheet), 40); row += 1) {
+        const year = cellNumber(worksheet, row, 1);
+        if (Number.isInteger(year) && year >= 90 && year <= 150) {
+          years.add(year);
+        }
+      }
+    }
+    return [...years].sort((left, right) => left - right);
+  }
+
+  function daysInMonth(rocYear, month) {
+    return new Date(rocYear + 1911, month, 0).getDate();
+  }
+
+  function buildDataset(workbook, fileName) {
+    const records = {};
+    const availableDates = [];
+    for (const year of collectYears(workbook)) {
+      for (let month = 1; month <= 12; month += 1) {
+        try {
+          rawSheetName(workbook, month);
+          supplySheetName(workbook, month);
+        } catch {
+          continue;
+        }
+        for (let day = 1; day <= daysInMonth(year, month); day += 1) {
+          const reviewDate = { year, month, day };
+          try {
+            const payload = buildPayload(buildReviewData(workbook, fileName, reviewDate));
+            records[payload.date.key] = payload;
+            availableDates.push(payload.date);
+          } catch {
+            continue;
+          }
+        }
+      }
+    }
+    if (!availableDates.length) {
+      throw new Error("此 Excel 檔未找到原水及供水均完整之日期，請確認檔案格式與資料內容。");
+    }
+    return { selectedKey: availableDates.at(-1).key, records, dates: availableDates };
+  }
+
+  global.WaterStatusCalc = {
+    buildDataset,
+    buildReviewData,
+    buildPayload,
+  };
+})(typeof window !== "undefined" ? window : globalThis);

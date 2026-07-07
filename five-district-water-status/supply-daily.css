@@ -77,6 +77,64 @@
   min-height: 178px;
 }
 
+.supply-control-panel {
+  align-items: flex-start;
+}
+
+.supply-control-form {
+  display: grid;
+  gap: 14px;
+  width: 100%;
+}
+
+.supply-control-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.control-field {
+  display: grid;
+  gap: 7px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.control-field span {
+  color: var(--ink);
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.control-field small {
+  color: var(--muted);
+  font-size: 0.76rem;
+}
+
+.control-field input {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 9px 10px;
+  color: var(--ink);
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+}
+
+.supply-control-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.secondary-button {
+  background: #eef4f8;
+  color: var(--ink);
+}
+
 .supply-summary-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
@@ -219,9 +277,18 @@
 @media (max-width: 900px) {
   .supply-upload-grid,
   .supply-date-form,
+  .supply-control-grid,
   .supply-export-form,
   .supply-summary-grid {
     grid-template-columns: 1fr;
+  }
+
+  .supply-control-actions {
+    justify-content: stretch;
+  }
+
+  .supply-control-actions button {
+    width: 100%;
   }
 
   .difference-chart {

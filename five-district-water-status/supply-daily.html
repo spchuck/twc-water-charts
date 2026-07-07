@@ -58,6 +58,20 @@
         </form>
       </section>
 
+      <section id="controlPanel" class="panel supply-control-panel" hidden>
+        <div>
+          <h2>管控值設定</h2>
+          <p id="controlMeta">未調整時採用原管控值；欄位留白即恢復原管控值。</p>
+        </div>
+        <form id="controlForm" class="supply-control-form">
+          <div id="controlGrid" class="supply-control-grid" aria-label="各廠所管控值設定"></div>
+          <div class="supply-control-actions">
+            <button id="applyControlButton" type="submit">套用管控值</button>
+            <button id="resetControlButton" type="button" class="secondary-button">恢復原管控值</button>
+          </div>
+        </form>
+      </section>
+
       <section id="resultPanel" hidden>
         <section class="summary-grid supply-summary-grid">
           <article class="metric">
@@ -127,5 +141,6 @@
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" integrity="sha256-yVBhl8r4CaB1tt7h2g02+xnacVj/6KiOewyWxdhiPJk=" crossorigin="anonymous"></script>
     <script src="./water_calc.js"></script>
     <script src="./supply-daily.js"></script>
+    <script src="./supply-control-settings.js"></script>
   </body>
 </html>
